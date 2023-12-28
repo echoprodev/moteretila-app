@@ -1,0 +1,62 @@
+<?php
+
+class telegrambot_model extends CI_Model{
+
+    private function prosesPesan($pesan) {
+        if (isset($pesan['text'])) {
+            $teks = $pesan['text'];
+            $chatId = $pesan['chat']['id'];
+
+            // Tambahkan perintah pengingat
+            if (strtolower($teks) === '/ingat') {
+                $this->tambahPengingat($chatId, 'Ini adalah pesan pengingat.', date('d-m-y H:i:s', strtotime('+1 hour')));
+            }
+        }
+
+        // Kirim pengingat yang harus dikirim
+        $this->kirimPengingat();
+    }
+
+    private function tambahPengingat($chatId, $teks, $waktu) {
+        $duedate = date('d-m-y', strtotime('+1 day')); // Ganti dengan nilai yang sesuai
+        $remaining = 24; // Ganti dengan nilai yang sesuai
+    
+        $this->load->model('telegram_model'); // Gantilah Your_model dengan model yang sesuai
+        $this->telegram_model->tambah_pengingat($chatId, $teks, $waktu, $duedate, $remaining);
+    }
+
+    private function kirimPengingat() {
+        $this->load->database();
+
+        $now = date('d-m-y H:i:s');
+        $this->db->where('reminder_time <=', $now);
+
+        try {
+            $query = $this->db->get('reminders');
+
+            foreach ($query->result() as $row) {
+                $this->kirimPesan($row->chat_id, $row->reminder_text);
+                // Hapus pengingat yang sudah dikirim
+                $this->db->delete('reminders', array('id' => $row->id));
+            }
+        } catch (Exception $e) {
+            // Tangani kesalahan basis data
+            error_log('Error sending reminders: ' . $e->getMessage());
+        }
+    }
+
+    private function kirimPesan($chatId, $teks) {
+        $token = '6794491739:AAFQDkAvCp0Q78Pr-F0YF-9UCOKo7MIh0Rk';
+        $apiUrl = "https://api.telegram.org/bot$token/sendMessage";
+        $params = array('chat_id' => $chatId, 'text' => $teks);
+
+        $ch = curl_init($apiUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        error_log($result);
+    }
+}

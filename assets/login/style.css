@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Alata", sans-serif;
+}
+
+body {
+    background-color: #f1f1f1;
+}
+
+.login-container {
+    display: flex;
+    height: 100vh;
+}
+
+.left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.left h1 {
+    color: #2b3d51;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.group {
+    position: relative; /* Menambahkan posisi relatif */
+    margin-bottom: 20px;
+}
+
+.group input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    width: 100%;
+    margin-bottom: 5px; /* Menyesuaikan margin-bottom */
+}
+
+.group i.fa {
+    position: absolute;
+    width: 50px;
+    height: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2b3d51;
+    border-radius: 5px 0 0 5px;
+    top: 22px;
+}
+
+button {
+    width: 100%;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 14px;
+    padding: 10px;
+    background-color: #2b3d51;
+    border: 0;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.group input {
+    padding: 12px 12px 12px 55px;
+}
+
+button i {
+    margin-right: 5px;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #2b3d51;
+    text-align: center;
+}
+
+.right img {
+    width: 100%;
+    max-width: 500px;
+    object-fit: contain;
+}
+
+.right h2,
+.right h3 {
+    color: #ffffff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
